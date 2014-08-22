@@ -1,5 +1,7 @@
 # Lingra
 
+STATUS: *For now, this project is work in progress.* It doesn't works yet.
+
 TODO: Write a gem description
 
 ## Installation
