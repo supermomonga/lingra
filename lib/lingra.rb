@@ -53,7 +53,7 @@ module Lingra
     end
 
     def private?
-      !private?
+      !public?
     end
 
     def add_member member
