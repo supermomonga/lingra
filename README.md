@@ -29,3 +29,7 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+## Thanks
+
+- Awesome investigate and documentation: [Lingr API メモ](https://gist.github.com/kumar8600/df2688b7bbc4f8fd28ba)
