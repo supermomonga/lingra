@@ -2,8 +2,10 @@ require "lingra/version"
 
 module Lingra
 
+  API_ROOT = 'http://lingr.com/api/'
 
   class Client
+
 
     def initialize username, password, app_key
       @debug = false
