@@ -20,7 +20,7 @@ module Lingra
       @session.dead?
     end
 
-    def rooms_ids
+    def room_ids
 
     end
 
