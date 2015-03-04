@@ -6,9 +6,11 @@ module Lingra
 
   class Client
 
-
-    def initialize username, password, app_key
-      @debug = false
+    def initialize username, password, app_key, debug = false
+      @debug = debug
+      @username = username
+      @password = password
+      @app_key = app_key
       @session = Lingra::Session.new username, password, app_key
     end
 
@@ -22,9 +24,36 @@ module Lingra
       @session.dead?
     end
 
-    def room_ids
+    # Session
 
+    def create_session
     end
+
+    def verify_session
+    end
+
+    def destroy_session
+    end
+
+    # User
+
+    def list_user_rooms
+    end
+
+    # Room
+
+    def room
+    end
+
+    def list_archives
+    end
+
+    def subscribe_room
+    end
+
+    # Favorite
+
+    # Event
 
     private
     def request method, path, params = {}
@@ -42,10 +71,20 @@ module Lingra
 
   class Session
 
-    def initialize username, password, app_key
-      @username = username
-      @password = password
-      @app_key = app_key
+    def initialize client
+      @client = client
+    end
+
+    def start
+    end
+
+    def stop
+    end
+
+    def alive?
+    end
+
+    def dead?
     end
 
   end
