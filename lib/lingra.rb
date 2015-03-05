@@ -1,4 +1,7 @@
-require "lingra/version"
+require 'lingra/version'
+require 'net/http'
+require 'uri'
+require 'json'
 
 module Lingra
 
@@ -56,15 +59,23 @@ module Lingra
     # Event
 
     private
-    def request method, path, params = {}
+    def get path, port = 8080, params = nil
+      url = URI.parse API_ROOT + path
+      req = Net::HTTP::Get.new url.path
+      res = Net::HTTP.start(url.host, port) {|http|
+        http.request req
+      }
+      JSON.parse res.body
     end
 
-    def get path, params = {}
-      request :get, path, params
-    end
-
-    def post path, params = {}
-      request :post, path, params
+    def post path, port = 80, params = nil
+      url = URI.parse API_ROOT + path
+      req = Net::HTTP::Post.new url.path
+      req.set_form_data params, ';' if params
+      res = Net::HTTP.start(url.host, port) {|http|
+        http.request req
+      }
+      JSON.parse res.body
     end
 
   end
