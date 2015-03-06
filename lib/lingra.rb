@@ -65,7 +65,12 @@ module Lingra
       res = Net::HTTP.start(url.host, port) {|http|
         http.request req
       }
-      JSON.parse res.body
+      json = JSON.parse res.body
+      if @client.valid_status? json
+        return json
+      else
+        raise FubenException
+      end
     end
 
     def post path, port = 80, params = nil
@@ -75,7 +80,16 @@ module Lingra
       res = Net::HTTP.start(url.host, port) {|http|
         http.request req
       }
-      JSON.parse res.body
+      json = JSON.parse res.body
+      if @client.valid_status? json
+        return json
+      else
+        raise FubenException
+      end
+    end
+
+    def valid_status? json
+      json['status'] == 'ok'
     end
 
   end
@@ -84,9 +98,16 @@ module Lingra
 
     def initialize client
       @client = client
+      @id = nil
     end
 
     def start
+      json = @client.post 'session/create', 80, {
+                            user: @client.username,
+                            password: @client.password,
+                            app_key: @client.app_key
+                          }
+      @id = json['session']
     end
 
     def stop
