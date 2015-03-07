@@ -111,6 +111,10 @@ module Lingra
     end
 
     def stop
+      return unless @id
+      json = @client.post 'session/destroy', 80, {
+                            session: @id,
+                          }
     end
 
     def alive?
