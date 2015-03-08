@@ -81,11 +81,7 @@ module Lingra
         http.request req
       }
       json = JSON.parse res.body
-      if @client.valid_status? json
-        return json
-      else
-        raise FubenException
-      end
+      return json
     end
 
     def valid_status? json
@@ -118,9 +114,20 @@ module Lingra
     end
 
     def alive?
+      return unless @id
+      json = @client.post 'session/verify', 80, {
+                            session: @id,
+                          }
+      return case json['status'].to_sym
+      when :ok
+        true
+      when :error
+        false
+      end
     end
 
     def dead?
+      !alive?
     end
 
   end
