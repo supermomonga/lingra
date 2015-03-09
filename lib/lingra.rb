@@ -103,7 +103,11 @@ module Lingra
                             password: @client.password,
                             app_key: @client.app_key
                           }
-      @id = json['session']
+      if json['status'] == 'ok'
+        @id = json['session']
+      else
+        # TODO
+      end
     end
 
     def stop
