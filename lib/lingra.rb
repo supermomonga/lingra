@@ -27,17 +27,6 @@ module Lingra
       @session.dead?
     end
 
-    # Session
-
-    def create_session
-    end
-
-    def verify_session
-    end
-
-    def destroy_session
-    end
-
     # User
 
     def list_user_rooms
