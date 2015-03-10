@@ -9,10 +9,11 @@ module Lingra
 
   class Client
 
-    def initialize username, password, app_key, debug = false
+    def initialize username, password, app_key, rooms = [] debug = false
       @debug = debug
       @username = username
       @password = password
+      @user_defined_rooms = rooms
       @app_key = app_key
       @session = Lingra::Session.new username, password, app_key
     end
@@ -30,6 +31,12 @@ module Lingra
     # User
 
     def list_user_rooms
+      json = post 'user/get_rooms', 80, {
+                    session: @session.id
+                  }
+      if json['statu'] == 'ok'
+        return json['rooms'].concat(@user_defined_rooms).uniq
+      end
     end
 
     # Room
