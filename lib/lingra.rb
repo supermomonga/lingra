@@ -13,9 +13,12 @@ module Lingra
       @debug = debug
       @username = username
       @password = password
-      @user_defined_rooms = rooms
+      @user_defined_room_ids = rooms
       @app_key = app_key
+
       @session = Lingra::Session.new username, password, app_key
+      @room_ids = []
+      @rooms = {}
     end
 
     def connect
@@ -30,12 +33,52 @@ module Lingra
 
     # User
 
+    def update_room_ids
+      @room_ids = list_user_rooms
+    end
+
+    def get_rooms
+      json = post 'room/show', 80, {
+                    session: @session.id,
+                    room: @room_ids.join(',')
+                  }
+      if json['status'] = 'ok'
+        json['rooms'].each do |room|
+          room = Lingra::Room.new room_id,
+                                  room['name'],
+                                  room['blurb'],
+                                  room['is_public']
+          room['roster']['bots'].each do |bot|
+            room.bots[bot['id']] =
+              Lingra::Bot.new bot['id'],
+                              bot['name'],
+                              bot['status'].to_sym,
+                              bot['icon_url']
+          end
+          room['roster']['members'].each do |member|
+            room.members[member['username']] =
+              Lingra::Member.new member['username'],
+                                 member['name'],
+                                 member['is_online'],
+                                 member['is_owner'],
+                                 member['pokeable'],
+                                 member['timestamp'],
+                                 member['icon_url']
+          end
+          @room[room_id] = room
+        end
+      end
+    end
+
     def list_user_rooms
       json = post 'user/get_rooms', 80, {
                     session: @session.id
                   }
       if json['statu'] == 'ok'
-        return json['rooms'].concat(@user_defined_rooms).uniq
+        return json['rooms'].concat(@user_defined_room_ids).uniq
+                .map &:to_sym
+      else
+        return []
       end
     end
 
@@ -136,12 +179,14 @@ module Lingra
 
     attr_reader :id, :name, :log, :members
 
-    def initialize id, name, public
+    def initialize id, name, blurb, public
       @id = id
       @name = name
+      @blurb = blurb
       @public = public
       @log = []
       @members = {}
+      @bots = {}
     end
 
     def public?
@@ -169,7 +214,7 @@ module Lingra
     attr_reader :username, :name, :icon_url
     attr_writer :owner, :online
 
-    def initialize username, name, icon_url, owner, online
+    def initialize username, name, online, owner, pokeable, timestamp, icon_url
     end
 
     def owner?
