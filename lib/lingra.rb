@@ -215,6 +215,13 @@ module Lingra
     attr_writer :owner, :online
 
     def initialize username, name, online, owner, pokeable, timestamp, icon_url
+      @username = username
+      @name = name
+      @online = online
+      @owner = owner
+      @pokeable = pokeable
+      @timestamp = timestamp # WTF it is?
+      @icon_url = icon_url
     end
 
     def owner?
