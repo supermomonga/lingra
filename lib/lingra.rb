@@ -236,6 +236,10 @@ module Lingra
       !online?
     end
 
+    def pokeable?
+      @pokeable
+    end
+
   end
 
   class Message
