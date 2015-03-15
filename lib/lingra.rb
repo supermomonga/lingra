@@ -209,6 +209,17 @@ module Lingra
 
   end
 
+  class Bot
+
+    def initialize id, name, status, icon_url
+      @id = id
+      @name = name
+      @status = status
+      @icon_url = icon_url
+    end
+
+  end
+
   class Member
 
     attr_reader :username, :name, :icon_url
