@@ -214,8 +214,20 @@ module Lingra
     def initialize id, name, status, icon_url
       @id = id
       @name = name
-      @status = status
+      @status = status.to_sym
       @icon_url = icon_url
+    end
+
+    def production?
+      @status == :production
+    end
+
+    def debug?
+      @status == :debug
+    end
+
+    def offline?
+      @status == :offline
     end
 
   end
