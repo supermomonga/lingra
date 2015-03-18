@@ -48,6 +48,7 @@ module Lingra
                                   room['name'],
                                   room['blurb'],
                                   room['is_public']
+          # Add bots
           room['roster']['bots'].each do |bot|
             room.bots[bot['id']] =
               Lingra::Bot.new bot['id'],
@@ -55,6 +56,7 @@ module Lingra
                               bot['status'].to_sym,
                               bot['icon_url']
           end
+          # Add members
           room['roster']['members'].each do |member|
             room.members[member['username']] =
               Lingra::Member.new member['username'],
@@ -64,6 +66,17 @@ module Lingra
                                  member['pokeable'],
                                  member['timestamp'],
                                  member['icon_url']
+          end
+          # Add latest 30 messages
+          room['messages'].each do |message|
+            room.messages[message['id']] =
+              Lingra::Message.new message['id'],
+                                  message['type'],
+                                  message['nickname'],
+                                  message['speaker_id'],
+                                  message['public_session_id'],
+                                  message['text'],
+                                  message['timestamp']
           end
           @room[room_id] = room
         end
@@ -267,9 +280,8 @@ module Lingra
 
   class Message
 
-    def initialize id, type, nickname, speaker_id, public_session_id, text, timestamp, mine
+    def initialize id, type, nickname, speaker_id, public_session_id, text, timestamp
       @id = id
-
     end
 
   end
