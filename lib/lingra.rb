@@ -69,14 +69,15 @@ module Lingra
           end
           # Add latest 30 messages
           room['messages'].each do |message|
-            room.messages[message['id']] =
-              Lingra::Message.new message['id'],
-                                  message['type'],
-                                  message['nickname'],
-                                  message['speaker_id'],
-                                  message['public_session_id'],
-                                  message['text'],
-                                  message['timestamp']
+            room.add_message Lingra::Message.new(
+                               message['id'],
+                               message['type'],
+                               message['nickname'],
+                               message['speaker_id'],
+                               message['public_session_id'],
+                               message['text'],
+                               message['timestamp']
+                             )
           end
           @room[room_id] = room
         end
@@ -200,6 +201,7 @@ module Lingra
       @log = []
       @members = {}
       @bots = {}
+      @messages = []
     end
 
     def public?
@@ -216,6 +218,11 @@ module Lingra
 
     def remove_member member
       @members.delete member.username
+    end
+
+    def add_message message
+      @messages << message
+      @messages.sort_by{|m| m['id']}
     end
 
 
