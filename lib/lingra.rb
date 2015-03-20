@@ -19,6 +19,7 @@ module Lingra
       @session = Lingra::Session.new username, password, app_key
       @room_ids = []
       @rooms = {}
+      @subscribing_room_ids
     end
 
     def connect
@@ -104,7 +105,21 @@ module Lingra
     def list_archives
     end
 
-    def subscribe_room
+    def subscribe_rooms room_ids = [], reset = true
+      json = post 'room/subscribe', 80, {
+                    session: @session.id,
+                    room: room_ids.join(','),
+                    reset: reset
+                  }
+      if json['status'] = 'ok'
+        if reset
+          # Reset
+          @subscribing_room_ids = room_ids
+        else
+          # Just add
+          @subscribing_room_ids = @subscribing_room_ids.concat(room_ids).uniq
+        end
+      end
     end
 
     # Favorite
