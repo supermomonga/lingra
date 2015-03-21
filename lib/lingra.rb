@@ -126,6 +126,13 @@ module Lingra
 
     # Event
 
+    def observe
+      json = get 'event/observe', 8080, {
+                   session: @session.id,
+                   counter: @counter
+                 }
+    end
+
     private
     def get path, port = 8080, params = nil
       url = URI.parse API_ROOT + path
