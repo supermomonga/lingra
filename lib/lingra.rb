@@ -20,6 +20,7 @@ module Lingra
       @room_ids = []
       @rooms = {}
       @subscribing_room_ids
+      @counter = 0
     end
 
     def connect
@@ -119,6 +120,7 @@ module Lingra
           # Just add
           @subscribing_room_ids = @subscribing_room_ids.concat(room_ids).uniq
         end
+        @counter = json['counter']
       end
     end
 
