@@ -133,6 +133,24 @@ module Lingra
                    session: @session.id,
                    counter: @counter
                  }
+      if json['status'] == 'ok'
+        @counter = json['counter']
+        json['events'].each do |event|
+          if event['message']
+            room = @rooms[event['room_id']]
+            message = Message.new(
+              event['id'],
+              event['type'],
+              event['nickname'],
+              event['speaker_id'],
+              event['public_session_id'],
+              event['text'],
+              event['timestamp']
+            )
+            room.add_message message
+          end
+        end
+      end
     end
 
     private
