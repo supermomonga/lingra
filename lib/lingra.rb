@@ -149,6 +149,9 @@ module Lingra
             )
             room.add_message message
           end
+          if event['presence']
+            # TODO
+          end
         end
       end
     end
