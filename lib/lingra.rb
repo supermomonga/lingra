@@ -247,6 +247,7 @@ module Lingra
       @members = {}
       @bots = {}
       @messages = []
+      @presences = []
     end
 
     def public?
@@ -267,7 +268,12 @@ module Lingra
 
     def add_message message
       @messages << message
-      @messages.sort_by{|m| m['id']}
+      @messages.sort_by{|it| it['id']}
+    end
+
+    def add_presence presence
+      @presences << presence
+      @presences.sort_by{|it| it['timestamp']}
     end
 
 
